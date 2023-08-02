@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import './App.css';
-import Footer from './container/Footer';
+import Footer from './components/Footer';
 
 const getOrCreate = () => {
   if (localStorage.getItem("count-react")) {

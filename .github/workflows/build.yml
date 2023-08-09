@@ -25,7 +25,7 @@ jobs:
           cache: "npm"
 
       - name: Installing Dependencies
-        run: npm i
+        run: npm install
 
       - name: Testing and generating coverage report
         run: npm test -- --coverage

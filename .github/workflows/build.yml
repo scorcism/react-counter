@@ -16,7 +16,7 @@ jobs:
     
     steps:
       - name: Checking repo
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -44,8 +44,8 @@ jobs:
           npm run deploy
 
         env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        user_name: 'github-actions[bot]'
-        user_email: 'github-actions[bot]@users.noreply.github.com'
-        github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
-        repository: ${{ github.repository }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+          repository: ${{ github.repository }}

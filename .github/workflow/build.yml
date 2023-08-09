@@ -1,0 +1,51 @@
+name: build and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x, 20.x]
+    
+    steps:
+      - name: Checking repo
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Installing Dependencies
+        run: npm i 
+      
+      - name: Testing and generating coverage report
+        run: npm test -- --coverage
+
+      - name: Upload coverage report to codecov
+        uses: codecov/codecov-action@v3
+      
+      - name: Run the build
+        run: npm run build
+      
+      - name: Deploy in gh-pages
+        run: |
+          git config --global user.name $user_name
+          git config --global user.email $user_email
+          git remote set-url origin https://${github_token}@github.com/${repository}
+          npm run deploy
+
+        env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+        repository: ${{ github.repository }}

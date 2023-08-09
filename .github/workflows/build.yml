@@ -7,13 +7,13 @@ on:
     branches: [main]
 
 jobs:
-  build: 
+  build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x, 20.x]
-    
+        node-version: [18.x]
+
     steps:
       - name: Checking repo
         uses: actions/checkout@v3
@@ -22,20 +22,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Installing Dependencies
-        run: npm i 
-      
+        run: npm i
+
       - name: Testing and generating coverage report
         run: npm test -- --coverage
 
       - name: Upload coverage report to codecov
         uses: codecov/codecov-action@v3
-      
+
       - name: Run the build
         run: npm run build
-      
+
       - name: Deploy in gh-pages
         run: |
           git config --global user.name $user_name
@@ -45,7 +45,7 @@ jobs:
 
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
           github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
           repository: ${{ github.repository }}
